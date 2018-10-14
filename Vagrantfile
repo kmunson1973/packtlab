@@ -11,7 +11,8 @@ $basescr = <<-BASESCRIPT
   if [ -f /tmp/scriptrun ]; then exit 0;fi
   cat /vagrant/packtlab/hosts >> /etc/hosts
   apt-get update
-  apt-get install -y kubelet=1.9.8-00 kubeadm=1.9.8-00 kubectl=1.9.8-00 kubernetes-cni bash-completion
+  apt-get install -y kubelet kubeadm kubectl kubernetes-cni bash-completion
+  #apt-get install -y kubelet=1.9.8-00 kubeadm=1.9.8-00 kubectl=1.9.8-00 kubernetes-cni bash-completion
   echo "source <(kubectl completion bash)" >> ~/.bashrc
   /vagrant/packtlab/join.sh
   systemctl daemon-reload
@@ -27,7 +28,8 @@ $primstrscr = <<-PRISCRIPT
   if [ -f /tmp/scriptrun ]; then exit 0;fi
   cat /vagrant/packtlab/hosts >> /etc/hosts
   apt-get update
-  apt-get install -y kubelet=1.9.8-00 kubeadm=1.9.8-00 kubectl=1.9.8-00 kubernetes-cni bash-completion
+  #apt-get install -y kubelet=1.9.8-00 kubeadm=1.9.8-00 kubectl=1.9.8-00 kubernetes-cni bash-completion
+  apt-get install -y kubelet kubeadm kubectl kubernetes-cni bash-completion
   echo "source <(kubectl completion bash)" >> /home/vagrant/.bashrc
   echo "source <(kubectl completion bash)" >> ~/.bashrc
   kubeadm  init --pod-network-cidr 10.244.0.0/16 --apiserver-advertise-address 192.168.0.11
@@ -71,8 +73,8 @@ Vagrant.configure("2") do |config|
       nodeconfig.vm.provider :virtualbox do |vb|
       nodeconfig.ssh.username = "vagrant"
       nodeconfig.ssh.password = "vagrant"
-      #nodeconfig.ssh.insert_key  = "true"
-      nodeconfig.vm.boot_timeout = 300
+      nodeconfig.ssh.insert_key  = "true"
+      nodeconfig.vm.boot_timeout = 600
       vb.memory = "2048"
       vb.cpus = "2"
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off", "--natdnsproxy1", "off" ]
